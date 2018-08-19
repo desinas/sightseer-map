@@ -1,16 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import axios from 'axios';
+
 import './App.css';
 
 class App extends Component {
 
+  state = { venues: [] }
+
   componentDidMount() {
     this.mapFetch();
+    this.getVenues();
   }
 
   mapFetch = function () {
     loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyC1Y06-pFfNM7Voq4ygiUcrAPHXXugYRNc&callback=initMap")
     window.initMap = this.initMap
+  }
+
+  getVenues = function () {
+    const endPoint = "https://api.foursquare.com/v2/venues/explore?"
+    const params = {
+      client_id: "IHKLFASXMM0FZNZLYG0DLFJD2T01HDGEY5HWWD0MBDVWHCNB",
+      client_secret: "0OPDP0NNJ3MI3XX4JWUZAPR4IUFYDGIF2UYCQBPXLVYUUE5V",
+      ll: "37.9726543,23.7263274",
+      query: "food",
+      v: "20180323"
+    }
+
+    axios.get(endPoint + new URLSearchParams(params))
+      .then(response => {
+        console.log(response.data.response.groups[0].items); //dev test
+        this.setState({
+          venues: response.data.response.groups[0].items
+        });
+      })
+      .catch(error => {
+        console.log("Fetch Venue Error - " + error)
+      })
   }
 
   initMap = function () {
