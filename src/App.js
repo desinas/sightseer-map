@@ -5,11 +5,13 @@ import './App.css';
 
 class App extends Component {
 
-  state = { venues: [] }
+  state = {
+    venues: [] 
+  }
 
   componentDidMount() {
-    this.mapFetch();
-    this.getVenues();
+    this.getVenues()
+    
   }
 
   mapFetch = function () {
@@ -32,18 +34,32 @@ class App extends Component {
         console.log(response.data.response.groups[0].items); //dev test
         this.setState({
           venues: response.data.response.groups[0].items
-        });
+        }, this.mapFetch()); //fetch map and render it after storing venues state
       })
       .catch(error => {
         console.log("Fetch Venue Error - " + error)
       })
   }
 
-  initMap = function () {
-    const map = new window.google.maps.Map(document.getElementById('map'), {
+  initMap =  () => {
+
+    var mapAthens = new window.google.maps.Map(document.getElementById('map'), {
       center: { lat: 37.9726543, lng: 23.7263274 },
       zoom: 16
     });
+    
+    this.state.venues.map(venueAll => {
+
+      var marker = new window.google.maps.Marker({
+        position: {lat: venueAll.venue.location.lat , lng: venueAll.venue.location.lng},
+        map: mapAthens,
+        title: venueAll.venue.name
+      })
+
+    })
+  
+
+
   }
 
   render() {
