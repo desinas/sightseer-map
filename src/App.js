@@ -1,8 +1,10 @@
 import React from 'react'
-import {Component} from 'react'
+import { Component } from 'react'
 import axios from 'axios'
 
 import './App.css'
+import { ATHENS, GOOGLEMAPS } from './AppDefaults'
+import { FOURSQUARE } from './AppDefaults'
 import * as data from './locations.json'
 import { loadScript } from './loadScript'
 import NeighborMap from './NeighborMap'
@@ -12,7 +14,7 @@ import NeighborMap from './NeighborMap'
 class App extends Component {
 
   state = {
-    mapAppCenter: { lat: 37.9726543, lng: 23.7263274 },
+    mapAppCenter: ATHENS,
     locsMustSee: data,
     venuesOfinterest: []
   }
@@ -23,7 +25,7 @@ class App extends Component {
   }
 
   mapFetch = function () {
-    const googMapsApiKey= "AIzaSyC1Y06-pFfNM7Voq4ygiUcrAPHXXugYRNc";
+    const googMapsApiKey= GOOGLEMAPS;
     const googMapsApiUrl= "https://maps.googleapis.com/maps/api/js?key="
                         + googMapsApiKey + "&callback=initMap";
 
@@ -34,9 +36,9 @@ class App extends Component {
   getVenues = function () {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
     const params = {
-      client_id: "IHKLFASXMM0FZNZLYG0DLFJD2T01HDGEY5HWWD0MBDVWHCNB",
-      client_secret: "0OPDP0NNJ3MI3XX4JWUZAPR4IUFYDGIF2UYCQBPXLVYUUE5V",
-      ll: "37.9726543,23.7263274",
+      client_id: FOURSQUARE.clientId,
+      client_secret: FOURSQUARE.clientSec,
+      ll: `${ATHENS.lat},${ATHENS.lng}`,
       query: "food",
       limit: "18",
       v: "20180323"
@@ -62,7 +64,7 @@ class App extends Component {
     } ) //create map of the specified area
 
     
-    var infowindow = new window.google.maps.InfoWindow() //create solo infowindow instead of having it in the loop and creates multi infowindows
+    let infowindow = new window.google.maps.InfoWindow() //create solo infowindow instead of having it in the loop and creates multi infowindows
 
     this.state.locsMustSee.map( (loc) => {
       
