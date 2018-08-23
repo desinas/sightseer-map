@@ -62,7 +62,7 @@ class App extends Component {
     } ) //create map of the specified area
 
     
-    var infowindow = new window.google.maps.InfoWindow() //create infowindow
+    var infowindow = new window.google.maps.InfoWindow() //create solo infowindow instead of having it in the loop and creates multi infowindows
 
     this.state.locsMustSee.map( (loc) => {
       
@@ -74,10 +74,7 @@ class App extends Component {
       } ) //generate markers for these locations
 
       let infoContent= `<h2>${loc.title}</h2>`;
-      let infowindow= new window.google.maps.InfoWindow( {
-        content: infoContent
-      } ) //generate infowindow for these locations
-
+      
       marker.addListener('click', function() {
         infowindow.setContent(infoContent);
         infowindow.open(map, marker);
@@ -86,8 +83,8 @@ class App extends Component {
 
     this.state.venuesOfinterest.map( (ven) => {
 
-      var infoContent = `<h3>${ven.venue.name}</h3>`;
-      // var infoContent = `${ven.venue.address}`;
+      var infoContent=
+          `<h2>${ven.venue.name}</h2><h3>${ven.venue.location.address}</h3>`;
       var marker = new window.google.maps.Marker({
         position: {lat: ven.venue.location.lat , lng: ven.venue.location.lng},
         map: map,
@@ -97,7 +94,7 @@ class App extends Component {
       marker.addListener('click', function() {
         infowindow.setContent(infoContent)
         infowindow.open(map, marker)
-      }) //open the infowindow on click
+      }) //open the infowindow on click and execute open on infowindow passing map instance with marker instance together
     })
   
 
