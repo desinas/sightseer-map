@@ -1,12 +1,20 @@
-import React, { Component } from 'react';
-import axios from 'axios';
+import React from 'react'
+import {Component} from 'react'
+import axios from 'axios'
 
-import './App.css';
+import './App.css'
+import * as data from './locations.json'
+import { loadScript } from './loadScript'
+import NeighborMap from './NeighborMap'
+
+
 
 class App extends Component {
 
   state = {
-    venues: [] 
+    mapAppCenter: { lat: 37.9726543, lng: 23.7263274 },
+    locsMustSee: data,
+    venuesOfinterest: []
   }
 
   componentDidMount() {
@@ -15,9 +23,13 @@ class App extends Component {
   }
 
   mapFetch = function () {
-    loadScript("https://maps.googleapis.com/maps/api/js?key=AIzaSyC1Y06-pFfNM7Voq4ygiUcrAPHXXugYRNc&callback=initMap")
+    const googMapsApiKey= "AIzaSyC1Y06-pFfNM7Voq4ygiUcrAPHXXugYRNc";
+    const googMapsApiUrl= "https://maps.googleapis.com/maps/api/js?key="
+                        + googMapsApiKey + "&callback=initMap";
+
+    loadScript(googMapsApiUrl)
     window.initMap = this.initMap
-  }
+  } //api endpoint build and call function
 
   getVenues = function () {
     const endPoint = "https://api.foursquare.com/v2/venues/explore?"
@@ -34,35 +46,56 @@ class App extends Component {
       .then(response => {
         // console.log(response.data.response.groups[0].items); //dev test
         this.setState({
-          venues: response.data.response.groups[0].items
+          venuesOfinterest: response.data.response.groups[0].items
         }, this.mapFetch()); //fetch map and render it after storing venues state
       })
       .catch(error => {
-        console.log("Fetch Venue Error - " + error)
+        console.log("Error on Fetching Venues: " + error)
       })
   }
 
   initMap =  () => {
 
-    var map = new window.google.maps.Map(document.getElementById('map'), {
-      center: { lat: 37.9726543, lng: 23.7263274 },
+    const map = new window.google.maps.Map(document.getElementById('map'), {
+      center: this.state.mapAppCenter,
       zoom: 16
-    }) //create map of the specified area
+    } ) //create map of the specified area
+
     
     var infowindow = new window.google.maps.InfoWindow() //create infowindow
 
-    this.state.venues.map(venueAll => {
-
-      var contentString = `${venueAll.venue.name}`;
-      // var contentString = `${venueAll.venue.address}`;
-      var marker = new window.google.maps.Marker({
-        position: {lat: venueAll.venue.location.lat , lng: venueAll.venue.location.lng},
+    this.state.locsMustSee.map( (loc) => {
+      
+      let marker= new window.google.maps.Marker( {
+        position: { lat: loc.coords.lat , lng: loc.coords.lng },
+        label: "in",
         map: map,
-        title: venueAll.venue.name
-      }) //create marker for venue
+        title: loc.title
+      } ) //generate markers for these locations
+
+      let infoContent= `<h2>${loc.title}</h2>`;
+      let infowindow= new window.google.maps.InfoWindow( {
+        content: infoContent
+      } ) //generate infowindow for these locations
 
       marker.addListener('click', function() {
-        infowindow.setContent(contentString)
+        infowindow.setContent(infoContent);
+        infowindow.open(map, marker);
+      } ) //open the infowindow on click
+    } )
+
+    this.state.venuesOfinterest.map( (ven) => {
+
+      var infoContent = `<h3>${ven.venue.name}</h3>`;
+      // var infoContent = `${ven.venue.address}`;
+      var marker = new window.google.maps.Marker({
+        position: {lat: ven.venue.location.lat , lng: ven.venue.location.lng},
+        map: map,
+        title: ven.venue.name
+      } ) //create marker for venue
+
+      marker.addListener('click', function() {
+        infowindow.setContent(infoContent)
         infowindow.open(map, marker)
       }) //open the infowindow on click
     })
@@ -74,25 +107,11 @@ class App extends Component {
   render() {
     return (
       <main>
-        <div id="map"></div>
+        <NeighborMap />
       </main>
       
     );
   }
-}
-
-function loadScript (url) {
-  var index = window.document.getElementsByTagName('script')[0];
-  var script = window.document.createElement('script');
-
-  script.src = url;
-  script.async = true;
-  script.defer = true;
-  index.parentNode.insertBefore(script, index);
-
-  script.onerror = function () {
-    document.write('Loading error on Google Maps')
-  };
 }
 
 export default App;
