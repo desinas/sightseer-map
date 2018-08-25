@@ -1,0 +1,32 @@
+[
+    {
+        "id":      "ms01",
+        "title":    "Acropolis of Athens",
+        "kind":     "Ancient Place",
+        "coords": { "lat": 37.971058, "lng": 23.7261356 }
+    },
+    {
+        "id":      "ms02",
+        "title":    "Odeon of Herodes Atticus",
+        "kind":     "Ancient Place",
+        "coords": { "lat": 37.9704902, "lng": 23.7248751 }
+    },
+    {
+        "id":      "ms03",
+        "title":    "Acropolis Museum",
+        "kind":     "Museum",
+        "coords": { "lat": 37.9679793, "lng": 23.7290324 }
+    },
+    {
+        "id":      "ms04",
+        "title":    "Old Temple of Athena",
+        "kind":     "Ancient Place",
+        "coords": { "lat": 37.9723329, "lng": 23.7264991 }
+    },
+    {
+        "id":      "ms06",
+        "title":    "Propylaea",
+        "kind":     "Ancient Place",
+        "coords": { "lat": 37.971484, "lng": 23.7253685 }
+    }
+]

@@ -1,3 +1,7 @@
+main {
+  display: flex;
+}
+
 .App {
   text-align: center;
 }
@@ -17,19 +21,8 @@
 .App-intro {
   font-size: large;
 }
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
-}
-
-
-/* Set the map height explicitly to define the size of the div
-* element that contains the map. Also, make the page fill the window. */
-#map {
-  height: 100vh;
-}
-html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
 }

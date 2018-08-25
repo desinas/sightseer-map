@@ -1,0 +1,11 @@
+#map {
+    width: 80%;
+    height: 100vh;
+}
+/* calc(100vh - 65px) */
+
+@media all and (max-width: 767px) {
+    #map {
+        width: 100%
+    }
+}
