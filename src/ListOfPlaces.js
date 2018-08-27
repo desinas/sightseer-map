@@ -4,16 +4,15 @@ import Place from "./Place";
 class ListOfPlaces extends Component {
 
   constructor(props) {
+
     super(props);
     this.state = {
       locations: '',
-      query: '',
-      
+      query: ''
     };
 
     this.filterLocations = this.filterLocations.bind(this);
   }
-
 
   filterLocations(event) {
     this.props.closeInfowindow();
@@ -44,6 +43,8 @@ class ListOfPlaces extends Component {
     var locationlist = this.state.locations.map(function(item, index) {
       return (
         <Place
+          role="listitem"
+          tabIndex="0"
           key={index}
           openInfowindow={this.props.openInfowindow.bind(this)}
           data={item} />
@@ -55,15 +56,21 @@ class ListOfPlaces extends Component {
       <div className="search-area">
         <input
           role="search"
-          aria-labelledby="filter"
+          aria-labelledby="Search for a place"
+          tabIndex="1"
           id="search-field"
           className="search-input"
           type="text"
           placeholder="Finder of Places"
           value={this.state.query}
-          onChange={this.filterLocations}
-        />
-        <ul className="location-list">
+          onChange={this.filterLocations} />
+          
+        <ul className="location-list"
+          role="listbox"
+          tabIndex="0"
+          aria-label="List of places to visit"
+        >
+
           {locationlist}
         </ul>
       </div>
