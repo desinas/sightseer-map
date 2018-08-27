@@ -11,9 +11,9 @@ function InfoWikiBox(props) {
 
 	return (
 		<aside className="info-box">
-			<p className="attribution">Thanks to Wikipedia</p>
 			<h2>{currentMarker.title}</h2>
 			<article>{infoContent}</article>
+			<p className="attribution">Thanks to Wikipedia</p>
 		</aside>
 	);
 }

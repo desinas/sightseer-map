@@ -12,15 +12,11 @@ import ListOfPlaces from './ListOfPlaces'
 import NeighborMap from './NeighborMap'
 import InfoWikiBox from './InfoWikiBox'
 
-
-
-
 class App extends Component {
 
     constructor(props) {
 
         super(props);
-
         this.state = {
         
             map: '',
@@ -35,11 +31,9 @@ class App extends Component {
             isInfowindowOpen: false,
             infoContent: ''
         }
-
             this.initMap = this.initMap.bind(this);
             this.openInfowindow = this.openInfowindow.bind(this);
             this.closeInfowindow = this.closeInfowindow.bind(this);
-        
     }
 
     componentDidMount() {
@@ -95,6 +89,7 @@ class App extends Component {
         const map = new window.google.maps.Map(document.getElementById('map'), {
             center: ATHENS.coords,
             zoom: ATHENS.elevation,
+            disableDefaultUI: true
         
         })//create map of the specified area
 
