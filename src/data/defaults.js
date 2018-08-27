@@ -15,4 +15,8 @@ const FOURSQUARE= {
     clientSec: "0OPDP0NNJ3MI3XX4JWUZAPR4IUFYDGIF2UYCQBPXLVYUUE5V"
 };
 
-export { ATHENS, GOOGLEMAPS, FOURSQUARE };
+//wikipedia api call on media-wiki
+const WIKIPEDIA= 
+'https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=';
+
+export { ATHENS, GOOGLEMAPS, FOURSQUARE, WIKIPEDIA };
