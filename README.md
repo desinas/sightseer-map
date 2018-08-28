@@ -16,6 +16,13 @@ Athens ancient places has been build from scracth using React. The application f
 - Run npm start
 - The application will open in browser at the address: localhost:3000
 
+## Installing in Production
+Run it in production by using the following commands
+
+Run npm run serve
+
+Then visit the production version at localhost:5000
+
 ## Needs for other Packages
 - npm package manager
 - React UI library

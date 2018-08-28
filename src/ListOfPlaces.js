@@ -11,10 +11,10 @@ class ListOfPlaces extends Component {
       query: ''
     };
 
-    this.filterLocations = this.filterLocations.bind(this);
-  }
+    // this.filterLocations = this.filterLocations.bind(this);
+  }//binding to access this keyword
 
-  filterLocations(event) {
+  filterLocations= (event) => {
     this.props.closeInfowindow();
     const { value } = event.target;
     var locations = [];

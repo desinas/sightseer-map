@@ -32,11 +32,20 @@ class App extends Component {
             infoContent: ''
         }
             this.initMap = this.initMap.bind(this);
+            this.gm_authFailure = this.gm_authFailure.bind(this);
             this.openInfowindow = this.openInfowindow.bind(this);
             this.closeInfowindow = this.closeInfowindow.bind(this);
     }
 
+    gm_authFailure(){
+        window.alert("Error, on reaching Google Maps API.")
+        let map = document.getElementById('map');
+        map.innerHTML = `<h1 class="error-msg">Sorry, Google Map could not be reached...</h1>`
+      }
+
     componentDidMount() {
+        //the following global function will be called when the authentication fails
+        window.gm_authFailure = this.gm_authFailure;
         //calling the function that fetces sights of the city 
         this.explorePlaces("sights", "athens")
         //connect the function from this class to the global window
@@ -74,7 +83,9 @@ class App extends Component {
                     places: response.data.response.groups[0].items,
                 }, this.mapFetch());//fetch map and render it after storing venues state
             }).catch(error => {
-                console.log("Error on Fetching Venues: " + error)
+                console.log("Error on Fetching Venues: " + error);
+                this.setState({error:"Data cannot be loaded at this time"});
+                window.alert("Sorry, there is a Foursquare get venues error!");
             })
     }
 
@@ -172,19 +183,30 @@ class App extends Component {
     }
 
     openInfowindow= function (marker) {
+
+        this.closeInfowindow();
+        marker.setAnimation(window.google.maps.Animation.BOUNCE);
         this.setState({
-                        isInfowindowOpen: true,
-                        currentMarker: marker
+            isInfowindowOpen: true,
+            currentMarker: marker,
+            prevmarker: marker
         });
-    
+        this.state.map.setCenter(marker.getPosition());
+        this.state.map.panBy(-50, 100);
         this.getWikiInfo(marker);
       }
     
     closeInfowindow= function () {
+
+        if (this.state.prevmarker) {
+            this.state.prevmarker.setAnimation(null);
+        }
         this.setState({
-                        isInfowindowOpen: false,
-                        currentMarker: {}
+            prevmarker: '',
+            isInfowindowOpen: false,
+            currentMarker: {}
         });
+        this.state.infowindow.close();
       }
 
     //https://www.mediawiki.org/wiki/API:Query#Sample_query
@@ -231,7 +253,8 @@ class App extends Component {
                         currentMarker={this.state.currentMarker}
                         infoContent={this.state.infoContent} />
                     }
-                    <NeighborMap />
+                    <NeighborMap 
+                        gm_authFailure = {this.gm_authFailure} />
                 </main>
             </div>
         )
